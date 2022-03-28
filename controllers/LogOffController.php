@@ -15,7 +15,7 @@ class LogOffController
             header('Location: index.php?action=accueil');
         }
 
-        $_SESSION = array();
+        session_destroy();
         header('Location: index.php?action=accueil');
 
     } //End of run

@@ -4,5 +4,8 @@
         <input type="file" name="logo" accept="image/png">
         <input type="submit" value="Envoyer" name="submit">
     </form>
+
+ <a href="?action=quizzAdd">Ajout de Quizz</a>
+
 </body>
 

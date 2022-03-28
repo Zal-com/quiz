@@ -12,24 +12,24 @@
             <img src="images/quiz-logo.png" alt="logo" id="logo">
         </div>
         <div id="header_main">
-            <a href="index.php"><h1>Titre du site</h1></a>
+            <a href="?action=accueil"><h1>Titre du site</h1></a>
         </div>
         <?php
         if(isset($_SESSION['auth'])){ ?>
             <p>Bonjour <?= $_SESSION['username'] ?></p>
-            <button><a href="index.php?action=log_off">Déconnexion</a></button>
+            <button><a href="?action=log_off">Déconnexion</a></button>
 
         <?php }
         else {
             ?>
 
             <div id="login_form">
-                <form action="index.php?action=login" method="post">
+                <form action="?action=login" method="post">
                     <input type="text" name="username" placeholder="Nom d'utilisateur">
                     <input type="password" name="password" placeholder="Mot de passe">
                     <input type="submit" name="submit_login" value="Connexion">
                 </form>
-                <button><a href="index.php?action=sign_in">Créer un compte</a></button>
+                <a href="?action=sign_in"><button>Créer un compte</button></a>
             </div>
 
         <?php } ?>
@@ -44,10 +44,10 @@
                 //Ne rien afficher
                 break;
             case 1:
-                ?><a href="user.php">Mon compte</a><?php
+                ?><a href="?action=user">Mon compte</a><?php
                 break;
             case 2:
-                ?><a href="admin.php">Administration</a><?php
+                ?><a href="?action=admin">Administration</a><?php
                 break;
         }
     }

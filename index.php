@@ -73,8 +73,8 @@ require '../controllers/quiz.func.php';
 </body>
 </html>
 */
-session_start();
 # Prise du temps actuel au début du script
+session_start();
 $time_start = microtime(true);
 
 # Variables globales du site
@@ -121,6 +121,10 @@ switch($action) {
     case 'log_off':
         require_once('controllers/LogOffController.php');
         $controller = new LogOffController($db);
+        break;
+    case 'quizzAdd':
+        require_once('controllers/QuizAddController.php');
+        $controller = new QuizAddController($db);
         break;
     default: # Par défaut, le contrôleur de l'accueil est sélectionné
         require_once('controllers/AccueilController.php');

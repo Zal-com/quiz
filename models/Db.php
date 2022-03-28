@@ -25,10 +25,9 @@ class Db
 
     public function login($user, $pwd)
     {
-        $query = 'SELECT password FROM user WHERE username = :username';
+        $query = 'SELECT password FROM user WHERE username = ?';
         $ps = $this->_db->prepare($query);
-        $ps->bindValue(':username', $user, PDO::PARAM_STR);
-        $ps->execute();
+        $ps->execute(array($user));
 
         $pass = $ps->fetch()[0];
         if(password_verify($pwd, $pass)){
@@ -39,44 +38,39 @@ class Db
 
     public function insert_user($username, $email, $pwd, $sexe){
         $hash_pwd = password_hash($pwd, CRYPT_BLOWFISH);
-        $query = "INSERT INTO `user` (`username`, `password`, `type`, `activated`) values(:username, :password, 1, 1)";
+        $query = "INSERT INTO `user` (`username`, `password`, `type`, `activated`) values(?, ?, 1, 1)";
         $ps = $this->_db->prepare($query);
-        $ps->bindValue(':password', $hash_pwd, PDO::PARAM_STR);
-        $ps->bindValue(':username', $username, PDO::PARAM_STR);
 
-        if($ps->execute()){
+        if($ps->execute(array($username, $hash_pwd))){
+
             //fetch freshly created user's ID
             $id = $this->getId($username);
             //insert in user_meta table
-            $query = "INSERT INTO `user_meta` (`id`, `email`, `sexe`, `dateInscription`) values(:id, :email, :sexe, DATE(NOW()))";
+            $query = "INSERT INTO `user_meta` (`id`, `email`, `sexe`, `dateInscription`) values(?,?,?, DATE(NOW()))";
             $ps = $this->_db->prepare($query);
-            $ps->bindValue(':id', $id, PDO::PARAM_INT);
-            $ps->bindValue(':email', $email, PDO::PARAM_STR);
-            $ps->bindValue(':sexe', $sexe, PDO::PARAM_STR_CHAR);
 
-            if($ps->execute()){
+            if($ps->execute(array($id, $email, $sexe))){
                 return 1;
             }
+            return 0;
         }
         return 0;
     }
 
     public function getId($username){
-        $query = $this->_db->prepare('SELECT id FROM user WHERE username = :username');
-        $query->bindValue(':username', $username);
-        $query->execute();
+        $query = $this->_db->prepare('SELECT id FROM user WHERE username = ?');
+        $query->execute(array($username));
 
         return $query->fetch()[0];
     }
 
-    public function fetchInfos($username){
-        $id = $this->getId($username);
-        $query = 'SELECT * FROM user WHERE id = :id';
+    public function fetchInfos($user){
+        $id = $this->getId($user);
+        $query = 'SELECT * FROM user WHERE id = ?';
         $ps = $this->_db->prepare($query);
-        $ps->bindValue(':id', $id);
-        $ps->execute();
+        $ps->execute(array($id));
 
-       return $tabInfos = $ps->fetchAll();
+       return $tabInfos = $ps->fetch(PDO::FETCH_ASSOC);
     }
 
 } //End of class
