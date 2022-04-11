@@ -9,7 +9,7 @@ class AdminController{
 
     public function run(){
 
-        if($_SESSION['auth'] != 1 && $_SESSION['admin'] != 1){
+        if($_SESSION['auth'] != 1 || $_SESSION['type'] != 'admin'){
             header('Location: index.php?action=accueil');
         }
 

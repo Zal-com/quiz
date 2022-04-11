@@ -83,7 +83,7 @@ define('CHEMIN_VUES','views/');
 define('CHEMIN_CONTROLEURS','controllers/');
 define('EMAIL','guillaume.stordeur@student.epfc.eu');
 define('DBHOST', 'localhost');
-define('DBNAME','quiz');
+define('DBNAME','dbquiz');
 define('DBLOGIN', 'root');
 define('DBPASS', '');
 $date = date("j/m/Y");
@@ -125,6 +125,10 @@ switch($action) {
     case 'quizzAdd':
         require_once('controllers/QuizAddController.php');
         $controller = new QuizAddController($db);
+        break;
+    case 'quiz':
+        require_once('controllers/QuizViewerController.php');
+        $controller = new QuizViewerController($db);
         break;
     default: # Par défaut, le contrôleur de l'accueil est sélectionné
         require_once('controllers/AccueilController.php');

@@ -2,14 +2,16 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" type="text/css" href="css/main.css"/>
+    <link rel="stylesheet" href="<?= CHEMIN_VUES ?>css/main.css"/>
+    <script src="https://kit.fontawesome.com/f92d7e8a24.js" crossorigin="anonymous"></script>
+    <script src="<?= CHEMIN_CONTROLEURS?>js/evaluations"></script>
     <title>Accueil</title>
 </head>
 <body>
 <header>
     <p id="header_container">
         <div id="logo_container">
-            <img src="images/quiz-logo.png" alt="logo" id="logo">
+            <img src="<?= CHEMIN_VUES ?>images/quiz-logo.png" alt="logo" id="logo">
         </div>
         <div id="header_main">
             <a href="?action=accueil"><h1>Titre du site</h1></a>

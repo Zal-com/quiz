@@ -16,6 +16,7 @@ class SigninController{
 
         if(isset($_POST['submit_sign'])){
             $username = $_POST['username'];
+            $_SESSION['username'] = $username;
             $email = $_POST['email'];
             $pwd = $_POST['password'];
             $sexe = $_POST['sexe'];

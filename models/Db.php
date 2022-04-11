@@ -38,23 +38,9 @@ class Db
 
     public function insert_user($username, $email, $pwd, $sexe){
         $hash_pwd = password_hash($pwd, CRYPT_BLOWFISH);
-        $query = "INSERT INTO `user` (`username`, `password`, `type`, `activated`) values(?, ?, 1, 1)";
+        $query = "INSERT INTO `user` (`username`, `password`, `type`, `activated`, `email`, `sexe`, `dateInscription`) values(?, ?, 'membre', 'Y', ?, ?, DATE(NOW()))";
         $ps = $this->_db->prepare($query);
-
-        if($ps->execute(array($username, $hash_pwd))){
-
-            //fetch freshly created user's ID
-            $id = $this->getId($username);
-            //insert in user_meta table
-            $query = "INSERT INTO `user_meta` (`id`, `email`, `sexe`, `dateInscription`) values(?,?,?, DATE(NOW()))";
-            $ps = $this->_db->prepare($query);
-
-            if($ps->execute(array($id, $email, $sexe))){
-                return 1;
-            }
-            return 0;
-        }
-        return 0;
+        $ps->execute(array($username, $hash_pwd, $email, $sexe));
     }
 
     public function getId($username){
@@ -72,6 +58,31 @@ class Db
 
        return $tabInfos = $ps->fetch(PDO::FETCH_ASSOC);
     }
+
+    public function quizList(){
+        $ps = $this->_db->prepare('SELECT * FROM quiz WHERE activated = "Y" AND prive = "N"');
+        $ps->execute();
+        return $ps->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function getQuestions(){
+        $ps = $this->_db->prepare('SELECT q.*, qq.quiz_id FROM `question` q, `quiz_question` qq, `quiz` qz WHERE qq.quiz_id = qz.id AND qq.question_id = q.id');
+        $ps->execute();
+        return $ps->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function getQuizData(){
+        $ps = $this->_db->prepare('SELECT * FROM `question` q, `quiz_question` qq, `quiz` qz WHERE qq.quiz_id = qz.id AND qq.question_id = q.id');
+        $ps->execute();
+        return $ps->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function getQuiz($id){
+        $ps = $this->_db->prepare('SELECT * FROM `question` q, `quiz_question` qq, `quiz` qz WHERE qq.quiz_id = qz.id AND qq.question_id = q.id AND qz.id = ?');
+        $ps->execute(array($id));
+        return $ps->fetch(PDO::FETCH_ASSOC);
+}
+
 
 } //End of class
 

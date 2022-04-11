@@ -39,7 +39,7 @@ class LoginController{
                     $_SESSION['userId'] = $infos['id'];
                     $_SESSION['activated'] = $infos['activated'];
                     $_SESSION['username'] = $user;
-                    if ($_SESSION['type'] == 2) {
+                    if ($_SESSION['type'] == 'admin') {
                         header('Location: index.php?action=admin');
                     } else header('Location: index.php?action=accueil');
 
